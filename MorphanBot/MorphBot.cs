@@ -53,6 +53,7 @@ namespace MorphanBot
             CommandService commands = Client.GetService<CommandService>();
             commands.CreateCommand("roll").Parameter("dice", ParameterType.Unparsed).Do(async (e) => await RollDice(e));
             commands.CreateCommand("say").Parameter("msg", ParameterType.Unparsed).Do(async (e) => await e.Channel.SendTTSMessage(e.Args[0]));
+            commands.CreateCommand("meme").Parameter("image", ParameterType.Required).Parameter("line1", ParameterType.Unparsed).Do(async (e) => await GenerateMeme(e));
             commands.CreateCommand("search").Parameter("param", ParameterType.Unparsed).Do(async (e) =>
             {
                 await e.Channel.SendIsTyping();
