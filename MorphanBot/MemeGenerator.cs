@@ -20,14 +20,22 @@ namespace MorphanBot
         {
             try
             {
-                string imageName = MemeFolder + e.Args[0] + ".jpg";
-                if (!File.Exists(imageName))
+                string imageName = MemeFolder + e.Args[0].ToLower() + ".jpg";
+                bool exists = false;
+                StringBuilder sb = new StringBuilder();
+                foreach (string file in Directory.EnumerateFiles(MemeFolder))
                 {
-                    StringBuilder sb = new StringBuilder();
-                    foreach (string file in Directory.EnumerateFiles(MemeFolder))
+                    string lower = file.ToLower();
+                    if (lower == imageName)
                     {
-                        sb.Append(", ").Append(file.Substring(MemeFolder.Length).Replace(".jpg", ""));
+                        exists = true;
+                        imageName = file;
+                        break;
                     }
+                    sb.Append(", ").Append(lower.Substring(MemeFolder.Length).Replace(".jpg", ""));
+                }
+                if (!exists)
+                {
                     await Reply(e, "Invalid meme image! I currently have: " + sb.Remove(0, 2).ToString());
                     return;
                 }
